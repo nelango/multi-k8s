@@ -1,0 +1,33 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+metadata:
+  name: multi-k-s
+build:
+  artifacts:
+    - image: multi-client
+      context: client
+    - image: multi-server
+      context: server
+    - image: multi-worker
+      context: worker
+    - image: postgres
+      context: postgres
+    - image: redis
+      context: redis
+  tagPolicy:
+    sha256: {}
+deploy:
+  kubectl:
+    manifests:
+      - k8s/client-cluster-ip-service.yml
+      - k8s/client-deployment.yml
+      - k8s/database-persistent-volume-claim.yml
+      - k8s/ingress-service.yml
+      - k8s/mysecret.yml
+      - k8s/postgres-cluster-ip-service.yml
+      - k8s/postgres-deployment.yml
+      - k8s/redis-cluster-ip-service.yml
+      - k8s/redis-deployment.yml
+      - k8s/server-cluster-ip-service.yml
+      - k8s/server-deployment.yml
+      - k8s/worker-deployment.yml
